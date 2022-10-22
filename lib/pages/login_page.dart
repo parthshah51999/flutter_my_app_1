@@ -1,8 +1,15 @@
 import "package:flutter/material.dart";
 import '../utils/routes.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool loginClicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +51,45 @@ class LoginPage extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              ElevatedButton(
-                onPressed: () {
+              InkWell(
+                onTap: () async {
+                  setState(() {
+                    loginClicked = true;
+                  });
+
+                  await Future.delayed(Duration(seconds: 1));
                   Navigator.pushNamed(context, AppRoutes.home);
                 },
-                child: Text("Login"),
-                style: TextButton.styleFrom(minimumSize: Size(120, 40)),
+                child: AnimatedContainer(
+                  duration: Duration(seconds: 1),
+                  height: 40,
+                  width: loginClicked ? 60 : 120,
+                  alignment: Alignment.center,
+                  child: loginClicked
+                      ? Icon(
+                          Icons.done,
+                          color: Colors.white,
+                        )
+                      : Text(
+                          "Login",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        ),
+                  decoration: BoxDecoration(
+                      color: Colors.deepPurple,
+                      borderRadius:
+                          BorderRadius.circular(loginClicked ? 40 : 8)),
+                ),
               )
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.pushNamed(context, AppRoutes.home);
+              //   },
+              //   child: Text("Login"),
+              //   style: TextButton.styleFrom(minimumSize: Size(120, 40)),
+              // )
             ],
           ),
         ));
